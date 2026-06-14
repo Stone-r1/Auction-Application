@@ -32,4 +32,11 @@ public class AuthenticationRepositoryAdapter implements AuthenticationRepository
     ) {
         return jpaAuthenticationRepository.findByEmail(email);
     }
+
+    @Override
+    public User save(
+            User user
+    ) {
+        return jpaAuthenticationRepository.save(user);
+    }
 }

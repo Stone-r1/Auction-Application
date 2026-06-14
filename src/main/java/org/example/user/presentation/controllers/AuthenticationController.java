@@ -4,27 +4,36 @@ package org.example.user.presentation.controllers;
 import jakarta.validation.Valid;
 import org.example.user.application.login.LoginRequest;
 import org.example.user.application.login.LoginUseCase;
+import org.example.user.application.register.RegisterRequest;
+import org.example.user.application.register.RegisterUseCase;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/login")
-public class LoginController {
+public class AuthenticationController {
     private final LoginUseCase loginUseCase;
+    private final RegisterUseCase registerUseCase;
 
-    public LoginController(
-            LoginUseCase loginUseCase
-    ) {
+    public AuthenticationController(
+            LoginUseCase loginUseCase,
+            RegisterUseCase registerUseCase) {
         this.loginUseCase = loginUseCase;
+        this.registerUseCase = registerUseCase;
     }
 
-    @PostMapping()
+    @PostMapping("/login")
     public String login(
             @Valid @RequestBody LoginRequest loginRequest
     ) {
         return loginUseCase.login(loginRequest);
+    }
+
+    @PostMapping("/register")
+    public String register(
+            @Valid @RequestBody RegisterRequest registerRequest
+    ) {
+        return registerUseCase.registerUser(registerRequest);
     }
 }
