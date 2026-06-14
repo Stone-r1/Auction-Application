@@ -37,3 +37,16 @@ Notification Worker consumes event
       |
 Notifies outbid users
 ```
+
+## Security Format
+```markdown
+Login Request
+      |
+AuthenticationManager
+      |
+AuthenticationProvider
+      |
+UserDetailsService
+      |
+Database
+```
