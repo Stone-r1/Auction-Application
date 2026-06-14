@@ -5,6 +5,7 @@ import jakarta.persistence.EntityExistsException;
 import org.example.user.domain.entities.User;
 import org.example.user.domain.repositories.AuthenticationRepository;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -58,6 +59,12 @@ public class AuthenticationService {
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new AuthenticationCredentialsNotFoundException(
                     "Wrong password for the user with username " + username
+            );
+        }
+
+        if (!user.getEnabled()) {
+            throw new DisabledException(
+                    "Account for username " + username + " has not been verified yet"
             );
         }
 

@@ -2,6 +2,7 @@ package org.example.user.presentation.exceptionHandlers;
 
 
 import jakarta.persistence.EntityExistsException;
+import org.example.user.infrastructure.exceptions.EmailDeliveryException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -59,6 +60,19 @@ public class GlobalExceptionHandler {
                 new Date(),
                 "Invalid credentials",
                 Map.of("User already exists", exception.getLocalizedMessage())
+        );
+    }
+
+    @ExceptionHandler(EmailDeliveryException.class)
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    public ErrorMessage handleEmailDeliveryFailure(EmailDeliveryException exception) {
+
+        return new ErrorMessage(
+                HttpStatus.SERVICE_UNAVAILABLE.value(),
+                new Date(),
+                "Could not send verification email",
+                Map.of("email", "Registration could not be completed because the verification " +
+                        "email failed to send. Please try registering again.")
         );
     }
 }
