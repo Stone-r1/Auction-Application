@@ -6,15 +6,19 @@ import org.example.user.domain.entities.User;
 import org.example.user.domain.repositories.AuthenticationRepository;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 public class AuthenticationService {
     private final AuthenticationRepository authenticationRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public AuthenticationService(
-            AuthenticationRepository authenticationRepository
+            AuthenticationRepository authenticationRepository,
+            PasswordEncoder passwordEncoder
     ) {
         this.authenticationRepository = authenticationRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     private void validateUserDoesNotExist(
@@ -53,7 +57,7 @@ public class AuthenticationService {
                         )
                 );
 
-        if (!user.getPassword().equals(password)) {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new AuthenticationCredentialsNotFoundException(
                     "Wrong password for the user with username " + username
             );
@@ -62,11 +66,11 @@ public class AuthenticationService {
         return user;
     }
 
-    // TODO: validate email exists and password is secure
     public User registerUser(
             User userToRegister
     ) {
         validateUserDoesNotExist(userToRegister);
+        userToRegister.setPassword(passwordEncoder.encode(userToRegister.getPassword()));
         return authenticationRepository.save(userToRegister);
     }
 }

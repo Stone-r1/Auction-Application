@@ -1,6 +1,7 @@
 package org.example.user.presentation.exceptionHandlers;
 
 
+import jakarta.persistence.EntityExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -46,6 +47,18 @@ public class GlobalExceptionHandler {
                 new Date(),
                 "Invalid request format",
                 Map.of("Date Format", "Date must be in format yyyy-MM-dd")
+        );
+    }
+
+    @ExceptionHandler(EntityExistsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorMessage handleParseError(EntityExistsException exception) {
+
+        return new ErrorMessage(
+                HttpStatus.BAD_REQUEST.value(),
+                new Date(),
+                "Invalid credentials",
+                Map.of("User already exists", exception.getLocalizedMessage())
         );
     }
 }
