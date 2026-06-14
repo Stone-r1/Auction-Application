@@ -13,7 +13,13 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "users")
+@Table(
+        name = "users",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uk_users_username", columnNames = "username"),
+                @UniqueConstraint(name = "uk_users_email", columnNames = "email")
+        }
+)
 @EntityListeners(AuditingEntityListener.class)
 public class User {
 
@@ -22,10 +28,13 @@ public class User {
     @Column(name = "user_id")
     private Long userId;
 
+    @Column(nullable = false)
     private String username;
 
+    @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
     private String email;
 
     @Column(name = "birth_date")

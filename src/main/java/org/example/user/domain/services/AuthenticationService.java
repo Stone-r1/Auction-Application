@@ -21,28 +21,26 @@ public class AuthenticationService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    private void throwUserExists(
+            String field,
+            String value
+    ) {
+        throw new EntityExistsException(
+                "User with " + field + " " + value + " already exists"
+        );
+    }
+
     private void validateUserDoesNotExist(
             User userToCheck
     ) {
-        User user = authenticationRepository
-                .findByUsername(userToCheck.getUsername())
-                .orElse(null);
+        String username = userToCheck.getUsername();
+        String email = userToCheck.getEmail();
 
-        if (user != null) {
-            throw new EntityExistsException(
-                    "User with username " + userToCheck.getUsername() + " already exists"
-            );
-        }
+        authenticationRepository.findByUsername(username)
+                .ifPresent(u -> throwUserExists("username", username));
 
-        user = authenticationRepository
-                .findByEmail(userToCheck.getEmail())
-                .orElse(null);
-
-        if (user != null) {
-            throw new EntityExistsException(
-                    "User with email " + userToCheck.getEmail() + " already exists"
-            );
-        }
+        authenticationRepository.findByEmail(email)
+                .ifPresent(u -> throwUserExists("email", email));
     }
 
     public User getUserByUsername(
