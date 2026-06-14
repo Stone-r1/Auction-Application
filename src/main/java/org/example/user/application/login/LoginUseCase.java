@@ -3,6 +3,7 @@ package org.example.user.application.login;
 import org.example.user.domain.entities.User;
 import org.example.user.domain.services.AuthenticationService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -15,8 +16,7 @@ public class LoginUseCase {
         this.authenticationService = authenticationService;
     }
 
-
-
+    @Transactional
     public String login(
             LoginRequest loginRequest
     ) {

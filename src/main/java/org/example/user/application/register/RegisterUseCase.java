@@ -4,6 +4,7 @@ package org.example.user.application.register;
 import org.example.user.domain.entities.User;
 import org.example.user.domain.services.AuthenticationService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -16,6 +17,7 @@ public class RegisterUseCase {
         this.authenticationService = authenticationService;
     }
 
+    @Transactional
     public String registerUser(
             RegisterRequest registerRequest
     ) {
