@@ -1,4 +1,4 @@
-package org.example.user.infrastructure.security;
+package org.example.shared.infrastructure.security;
 
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -9,7 +9,6 @@ import org.example.user.domain.entities.User;
 import org.example.user.domain.repositories.AuthenticationRepository;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 

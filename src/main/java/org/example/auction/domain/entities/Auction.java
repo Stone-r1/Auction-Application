@@ -11,7 +11,15 @@ import java.time.LocalDate;
 
 @Data
 @Entity
-@Table(name = "auction")
+@Table(
+        name = "auction",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_auction_seller_item",
+                        columnNames = {"seller_id", "item_name"}
+                )
+        }
+)
 public class Auction {
 
     @Id
@@ -42,8 +50,8 @@ public class Auction {
     private User seller;
 
     @ManyToOne
-    @JoinColumn(name = "max_bid_user_id", nullable = false)
-    private User maxBidUser;
+    @JoinColumn(name = "winner_id", nullable = false)
+    private User winner;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "auction_state", nullable = false)

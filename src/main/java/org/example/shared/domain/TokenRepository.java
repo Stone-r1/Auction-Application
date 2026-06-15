@@ -1,4 +1,4 @@
-package org.example.user.domain.repositories;
+package org.example.shared.domain;
 
 import org.example.user.domain.entities.User;
 

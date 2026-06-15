@@ -1,7 +1,7 @@
 package org.example.user.application.login;
 
 import org.example.user.domain.entities.User;
-import org.example.user.domain.repositories.TokenRepository;
+import org.example.shared.domain.TokenRepository;
 import org.example.user.domain.services.AuthenticationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,4 +1,4 @@
-package org.example.user.infrastructure.security;
+package org.example.shared.infrastructure.security;
 
 import org.example.user.domain.entities.User;
 import org.jspecify.annotations.Nullable;

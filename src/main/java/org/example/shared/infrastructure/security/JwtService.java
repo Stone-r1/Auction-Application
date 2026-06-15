@@ -1,4 +1,4 @@
-package org.example.user.infrastructure.security;
+package org.example.shared.infrastructure.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -6,7 +6,7 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import org.example.user.domain.entities.User;
-import org.example.user.domain.repositories.TokenRepository;
+import org.example.shared.domain.TokenRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

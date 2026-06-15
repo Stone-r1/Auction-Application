@@ -1,8 +1,9 @@
-package org.example.user.presentation.exceptionHandlers;
+package org.example.user.presentation.exceptionHandling;
 
 
 import jakarta.persistence.EntityExistsException;
 import org.example.shared.infrastructure.exceptions.EmailDeliveryException;
+import org.example.shared.presentation.exceptionHandlers.ErrorMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -16,7 +17,7 @@ import java.util.Map;
 
 
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class UserExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

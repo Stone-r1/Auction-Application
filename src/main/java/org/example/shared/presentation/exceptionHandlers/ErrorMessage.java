@@ -1,4 +1,4 @@
-package org.example.user.presentation.exceptionHandlers;
+package org.example.shared.presentation.exceptionHandlers;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
