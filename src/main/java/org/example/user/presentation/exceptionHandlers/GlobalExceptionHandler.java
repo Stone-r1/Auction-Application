@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeoutException;
 
 
 @RestControllerAdvice
@@ -53,7 +54,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntityExistsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorMessage handleParseError(EntityExistsException exception) {
+    public ErrorMessage handleEntityExists(EntityExistsException exception) {
 
         return new ErrorMessage(
                 HttpStatus.BAD_REQUEST.value(),
@@ -71,8 +72,20 @@ public class GlobalExceptionHandler {
                 HttpStatus.SERVICE_UNAVAILABLE.value(),
                 new Date(),
                 "Could not send verification email",
-                Map.of("email", "Registration could not be completed because the verification " +
+                Map.of("Email", "Registration could not be completed because the verification " +
                         "email failed to send. Please try registering again.")
+        );
+    }
+
+    @ExceptionHandler(TimeoutException.class)
+    @ResponseStatus(HttpStatus.REQUEST_TIMEOUT)
+    public ErrorMessage handleTimeOutException(TimeoutException timeoutException) {
+
+        return new ErrorMessage(
+                HttpStatus.REQUEST_TIMEOUT.value(),
+                new Date(),
+                "Request timed out",
+                Map.of("Email", "Could not send email")
         );
     }
 }
