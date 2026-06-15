@@ -8,13 +8,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 
 public interface JpaAuctionRepository extends JpaRepository<Auction, Long> {
-    Optional<Auction> findAuctionBySellerAndItem(User seller, String item);
-    Page<Auction> findAuctionsByUser(@NotNull Pageable pageable, User user);
+    Optional<Auction> findAuctionBySellerAndItemName(User seller, String item);
+    Page<Auction> findAuctionsBySeller(@NotNull Pageable pageable, User seller);
+    Page<Auction> findAuctionsByWinner(@NotNull Pageable pageable, User winner);
     Page<Auction> findAll(@NonNull Pageable pageable);
     Auction save(Auction auction);
 }

@@ -6,13 +6,13 @@ import org.example.shared.domain.PageQuery;
 import org.example.shared.domain.PageResult;
 import org.example.user.domain.entities.User;
 
-import java.util.List;
 import java.util.Optional;
 
 
 public interface AuctionRepository {
-    Optional<Auction> findAuctionBySellerAndItem(User seller, String item);
-    PageResult<Auction> findAuctionsByUser(PageQuery pageQuery, User user);
+    Optional<Auction> findAuctionBySellerAndItemName(User seller, String item);
+    PageResult<Auction> findAuctionsBySeller(PageQuery pageQuery, User seller);
+    PageResult<Auction> findAuctionsByWinner(PageQuery pageQuery, User winner);
     PageResult<Auction> findAll(PageQuery pageQuery);
     Auction save(Auction auction);
 }
