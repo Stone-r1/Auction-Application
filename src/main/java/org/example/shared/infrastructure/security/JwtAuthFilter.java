@@ -10,6 +10,7 @@ import org.example.user.domain.repositories.AuthenticationRepository;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -37,7 +38,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException, JwtException {
         String authHeader = request.getHeader("Authorization");
 
-        if (authHeader == null || !authHeader.startsWith(BEARER_PREFIX)) {
+        if (!validAuthHeader(authHeader)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -57,6 +58,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private boolean validAuthHeader(
+            String authHeader
+    ) {
+        return authHeader != null && authHeader.startsWith(BEARER_PREFIX);
     }
 
     private void setAuthenticationContext(

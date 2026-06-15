@@ -18,8 +18,7 @@ public class SecurityConfig {
     private static final Integer SECURITY_STRENGTH = 12;
 
     public SecurityConfig(
-            JwtAuthFilter jwtAuthFilter,
-            AuthenticationRepository authenticationRepository
+            JwtAuthFilter jwtAuthFilter
     ) {
         this.jwtAuthFilter = jwtAuthFilter;
     }
