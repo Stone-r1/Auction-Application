@@ -2,7 +2,7 @@ package org.example.user.presentation.exceptionHandlers;
 
 
 import jakarta.persistence.EntityExistsException;
-import org.example.user.infrastructure.exceptions.EmailDeliveryException;
+import org.example.shared.infrastructure.exceptions.EmailDeliveryException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;

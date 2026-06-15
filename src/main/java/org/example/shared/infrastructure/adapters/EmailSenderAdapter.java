@@ -1,10 +1,10 @@
-package org.example.user.infrastructure.adapters;
+package org.example.shared.infrastructure.adapters;
 
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import org.example.user.domain.repositories.EmailSenderRepository;
-import org.example.user.infrastructure.exceptions.EmailDeliveryException;
+import org.example.shared.domain.EmailSenderRepository;
+import org.example.shared.infrastructure.exceptions.EmailDeliveryException;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;

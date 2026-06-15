@@ -1,4 +1,4 @@
-package org.example.user.infrastructure.exceptions;
+package org.example.shared.infrastructure.exceptions;
 
 public class EmailDeliveryException extends RuntimeException {
     public EmailDeliveryException(

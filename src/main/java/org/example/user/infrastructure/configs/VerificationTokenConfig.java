@@ -2,7 +2,7 @@ package org.example.user.infrastructure.configs;
 
 
 import org.example.user.domain.repositories.AuthenticationRepository;
-import org.example.user.domain.repositories.EmailSenderRepository;
+import org.example.shared.domain.EmailSenderRepository;
 import org.example.user.domain.repositories.VerificationTokenRepository;
 import org.example.user.domain.services.VerificationTokenService;
 import org.springframework.beans.factory.annotation.Value;

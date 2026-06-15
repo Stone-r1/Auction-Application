@@ -3,7 +3,7 @@ package org.example.user.domain.services;
 import org.example.user.domain.entities.User;
 import org.example.user.domain.entities.VerificationToken;
 import org.example.user.domain.repositories.AuthenticationRepository;
-import org.example.user.domain.repositories.EmailSenderRepository;
+import org.example.shared.domain.EmailSenderRepository;
 import org.example.user.domain.repositories.VerificationTokenRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
