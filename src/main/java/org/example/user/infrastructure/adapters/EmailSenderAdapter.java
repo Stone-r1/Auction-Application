@@ -5,6 +5,7 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.example.user.domain.repositories.EmailSenderRepository;
 import org.example.user.infrastructure.exceptions.EmailDeliveryException;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -36,7 +37,7 @@ public class EmailSenderAdapter implements EmailSenderRepository {
 
             mailSender.send(message);
 
-        } catch (MessagingException exception) {
+        } catch (MessagingException | MailException exception) {
             throw new EmailDeliveryException("Failed to send email to " + to, exception);
         }
     }
