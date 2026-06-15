@@ -1,13 +1,17 @@
 package org.example.auction.infrastructure.adapters;
 
-import org.example.AuctionApplication;
 import org.example.auction.domain.entities.Auction;
 import org.example.auction.domain.repositories.AuctionRepository;
 import org.example.auction.infrastructure.persistance.JpaAuctionRepository;
+import org.example.shared.domain.PageQuery;
+import org.example.shared.domain.PageResult;
 import org.example.user.domain.entities.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
@@ -21,22 +25,48 @@ public class AuctionAdapter implements AuctionRepository {
     }
 
     @Override
-    public Auction findAuctionBySellerAndItem(User seller, String item) {
-        return null;
+    public Optional<Auction> findAuctionBySellerAndItem(
+            User seller,
+            String item
+    ) {
+        return Optional.empty();
     }
 
     @Override
-    public List<Auction> findAuctionsByUser(User user) {
-        return List.of();
+    public PageResult<Auction> findAuctionsByUser(
+            PageQuery pageQuery,
+            User user
+    ) {
+        PageRequest springPageRequest = PageRequest.of(pageQuery.pageNumber(), pageQuery.pageSize());
+        Page<Auction> springPage = jpaAuctionRepository.findAuctionsByUser(springPageRequest, user);
+        return new PageResult<>(
+                springPage.getContent(),
+                springPage.getNumber(),
+                springPage.getSize(),
+                springPage.getTotalElements(),
+                springPage.getTotalPages()
+        );
     }
 
     @Override
-    public List<Auction> findAllAuctions() {
-        return jpaAuctionRepository.findAllAuctions();
+    public PageResult<Auction> findAll(
+            PageQuery pageQuery
+    ) {
+        PageRequest springPageRequest = PageRequest.of(pageQuery.pageNumber(), pageQuery.pageSize());
+        Page<Auction> springPage = jpaAuctionRepository.findAll(springPageRequest);
+        return new PageResult<>(
+                springPage.getContent(),
+                springPage.getNumber(),
+                springPage.getSize(),
+                springPage.getTotalElements(),
+                springPage.getTotalPages()
+        );
     }
 
     @Override
-    public Auction save(Auction auction) {
+    public Auction save(
+            Auction auction
+    ) {
         return null;
     }
 }

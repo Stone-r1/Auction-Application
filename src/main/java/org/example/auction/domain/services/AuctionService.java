@@ -3,8 +3,9 @@ package org.example.auction.domain.services;
 
 import org.example.auction.domain.entities.Auction;
 import org.example.auction.domain.repositories.AuctionRepository;
+import org.example.shared.domain.PageQuery;
+import org.example.shared.domain.PageResult;
 
-import java.util.List;
 
 public class AuctionService {
     private final AuctionRepository auctionRepository;
@@ -15,7 +16,9 @@ public class AuctionService {
         this.auctionRepository = auctionRepository;
     }
 
-    public List<Auction> getAllAuctions() {
-        return auctionRepository.findAllAuctions();
+    public PageResult<Auction> getAllAuctions(
+            PageQuery pageQuery
+    ) {
+        return auctionRepository.findAll(pageQuery);
     }
 }
