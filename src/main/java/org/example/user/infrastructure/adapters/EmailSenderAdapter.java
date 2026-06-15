@@ -31,7 +31,7 @@ public class EmailSenderAdapter implements EmailSenderRepository {
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
             helper.setTo(to);
-            helper.setFrom(subject);
+            helper.setSubject(subject);
             helper.setText(htmlContents, true);
 
             mailSender.send(message);

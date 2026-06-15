@@ -1,5 +1,6 @@
 package org.example.user.infrastructure.security;
 
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,7 +35,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain
-    ) throws ServletException, IOException {
+    ) throws ServletException, IOException, JwtException {
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith(BEARER_PREFIX)) {
@@ -43,29 +44,33 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         String token = authHeader.replaceFirst(BEARER_PREFIX, "");
-        String username = jwtService.getUsernameFromToken(token);
 
-        if (username == null || SecurityContextHolder.getContext().getAuthentication() != null) {
-            filterChain.doFilter(request, response);
-            return;
+        try {
+            String username = jwtService.getUsernameFromToken(token);
+
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                authenticationRepository.findByUsername(username)
+                        .filter(user -> jwtService.isTokenValid(token, user))
+                        .ifPresent(this::setAuthenticationContext);
+            }
+        } catch (JwtException exception) {
+            throw new JwtException("The JWT Token is invalid, expired or malformed.", exception);
         }
 
-        User user = authenticationRepository
-                .findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(
-                        "User with username " + username + " does not exist"
-                ));
+        filterChain.doFilter(request, response);
+    }
 
-        if (jwtService.isTokenValid(token, user)) {
-            CustomUserDetails customUserDetails = new CustomUserDetails(user);
+    private void setAuthenticationContext(
+            User user
+    ) {
+        CustomUserDetails userDetails = new CustomUserDetails(user);
 
-            // No authorities as for now
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                    customUserDetails,
-                    null
-            );
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                userDetails,
+                null,
+                userDetails.getAuthorities()
+        );
 
-            SecurityContextHolder.getContext().setAuthentication(authToken);
-        }
+        SecurityContextHolder.getContext().setAuthentication(authToken);
     }
 }

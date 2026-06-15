@@ -24,7 +24,7 @@ public class LoginUseCase {
     public String login(
             LoginRequest loginRequest
     ) {
-        User user = authenticationService.getUserByUsername(
+        User user = authenticationService.authenticateUser(
                 loginRequest.username(),
                 loginRequest.password()
         );

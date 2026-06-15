@@ -55,7 +55,7 @@ class AuthenticationServiceTest {
                 passwordEncoder.matches("rawPassword", "encodedPassword")
         ).thenReturn(true);
 
-        User result = authenticationService.getUserByUsername("john", "rawPassword");
+        User result = authenticationService.authenticateUser("john", "rawPassword");
 
         assertThat(result).isEqualTo(enabledUser);
     }
@@ -66,7 +66,7 @@ class AuthenticationServiceTest {
                 authenticationRepository.findByUsername("unknown")
         ).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> authenticationService.getUserByUsername("unknown", "anyPassword"))
+        assertThatThrownBy(() -> authenticationService.authenticateUser("unknown", "anyPassword"))
                 .isInstanceOf(UsernameNotFoundException.class);
     }
 
@@ -80,7 +80,7 @@ class AuthenticationServiceTest {
                 passwordEncoder.matches("wrongPassword", "encodedPassword")
         ).thenReturn(false);
 
-        assertThatThrownBy(() -> authenticationService.getUserByUsername("john", "wrongPassword"))
+        assertThatThrownBy(() -> authenticationService.authenticateUser("john", "wrongPassword"))
                 .isInstanceOf(AuthenticationCredentialsNotFoundException.class);
     }
 
@@ -96,7 +96,7 @@ class AuthenticationServiceTest {
                 passwordEncoder.matches("rawPassword", "encodedPassword")
         ).thenReturn(true);
 
-        assertThatThrownBy(() -> authenticationService.getUserByUsername("john", "rawPassword"))
+        assertThatThrownBy(() -> authenticationService.authenticateUser("john", "rawPassword"))
                 .isInstanceOf(DisabledException.class);
     }
 

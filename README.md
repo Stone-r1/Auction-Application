@@ -40,13 +40,5 @@ Notifies outbid users
 
 ## Security Format
 ```markdown
-Login Request
-      |
-AuthenticationManager
-      |
-AuthenticationProvider
-      |
-UserDetailsService
-      |
-Database
+Login Request → AuthenticationService.getUserByUsername → AuthenticationRepository → Database
 ```

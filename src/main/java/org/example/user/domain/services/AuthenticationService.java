@@ -44,7 +44,7 @@ public class AuthenticationService {
                 .ifPresent(u -> throwUserExists("email", email));
     }
 
-    public User getUserByUsername(
+    public User authenticateUser(
             String username,
             String password
     ) {
