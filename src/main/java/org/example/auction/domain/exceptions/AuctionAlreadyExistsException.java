@@ -1,8 +1,10 @@
 package org.example.auction.domain.exceptions;
 
+import lombok.Getter;
 import org.example.shared.domain.exceptions.AppException;
 
 
+@Getter
 public class AuctionAlreadyExistsException extends AppException {
 
     private final String itemName;
@@ -20,9 +22,5 @@ public class AuctionAlreadyExistsException extends AppException {
     ) {
         super("You already have an active auction for item '" + itemName + "'.", cause);
         this.itemName = itemName;
-    }
-
-    public String getItemName() {
-        return itemName;
     }
 }
