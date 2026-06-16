@@ -1,4 +1,4 @@
-package org.example.auction.application;
+package org.example.auction.application.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;

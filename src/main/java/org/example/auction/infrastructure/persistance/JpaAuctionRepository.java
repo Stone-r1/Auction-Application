@@ -12,6 +12,7 @@ import java.util.Optional;
 
 public interface JpaAuctionRepository extends JpaRepository<Auction, Long> {
     Optional<Auction> findAuctionBySellerIdAndItemName(Long sellerId, String item);
+    Optional<Auction> findAuctionByAuctionId(Long auctionId);
     Page<Auction> findAuctionsBySellerId(@NotNull Pageable pageable, Long seller);
     Page<Auction> findAuctionsByWinnerId(@NotNull Pageable pageable, Long winner);
     Page<Auction> findAll(@NonNull Pageable pageable);

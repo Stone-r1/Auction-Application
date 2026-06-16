@@ -1,7 +1,7 @@
 package org.example.auction.domain.services;
 
 
-import org.example.auction.domain.data.AuctionState;
+import org.example.shared.data.AuctionState;
 import org.example.auction.domain.entities.Auction;
 import org.example.auction.domain.repositories.AuctionRepository;
 import org.example.shared.domain.PageQuery;

@@ -43,6 +43,13 @@ public class AuctionAdapter implements AuctionRepository {
     }
 
     @Override
+    public Optional<Auction> findAuctionByAuctionId(
+            Long auctionId
+    ) {
+        return jpaAuctionRepository.findAuctionByAuctionId(auctionId);
+    }
+
+    @Override
     public PageResult<Auction> findAuctionsBySellerId(
             PageQuery pageQuery,
             Long seller

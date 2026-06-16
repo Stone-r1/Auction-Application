@@ -3,7 +3,7 @@ package org.example.auction.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.example.auction.domain.data.AuctionState;
+import org.example.shared.data.AuctionState;
 
 import java.time.LocalDateTime;
 

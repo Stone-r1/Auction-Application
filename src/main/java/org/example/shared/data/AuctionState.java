@@ -1,4 +1,4 @@
-package org.example.auction.domain.data;
+package org.example.shared.data;
 
 public enum AuctionState {
     NOT_STARTED,

@@ -2,8 +2,8 @@ package org.example.auction.presentation.controllers;
 
 
 import jakarta.validation.Valid;
-import org.example.auction.application.AuctionUseCase;
-import org.example.auction.application.CreateAuctionRequest;
+import org.example.auction.application.orchestrators.AuctionUseCase;
+import org.example.auction.application.dto.CreateAuctionRequest;
 import org.example.auction.domain.entities.Auction;
 import org.example.shared.domain.PageResult;
 import org.springframework.http.HttpStatus;

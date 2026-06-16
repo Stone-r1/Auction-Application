@@ -3,9 +3,8 @@ package org.example.auction.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.example.user.domain.entities.User;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Data
@@ -18,17 +17,15 @@ public class Bid {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bidId;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 
-    @ManyToOne
-    @JoinColumn(name = "auction_id", nullable = false)
-    private Auction auction;
+    @Column(name = "auction_id", nullable = false)
+    private Long auctionId;
 
     @Column(nullable = false)
     private Double amount;
 
     @Column(name = "placed_at", nullable = false)
-    private LocalDate placedAt = LocalDate.now();
+    private LocalDateTime placedAt = LocalDateTime.now();
 }

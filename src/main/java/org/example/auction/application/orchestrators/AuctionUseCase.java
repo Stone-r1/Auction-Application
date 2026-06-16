@@ -1,6 +1,7 @@
-package org.example.auction.application;
+package org.example.auction.application.orchestrators;
 
 
+import org.example.auction.application.dto.CreateAuctionRequest;
 import org.example.auction.domain.entities.Auction;
 import org.example.auction.domain.services.AuctionService;
 import org.example.shared.domain.PageQuery;
