@@ -1,6 +1,5 @@
 package org.example.shared.infrastructure.security;
 
-import org.example.user.domain.repositories.AuthenticationRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -30,6 +29,7 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+                        // intentionally accepting every request for testing purposes
                         .requestMatchers("/register", "/login", "/verify", "/auction/**").permitAll()
                         .anyRequest().authenticated()
                 )

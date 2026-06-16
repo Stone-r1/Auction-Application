@@ -35,11 +35,16 @@ public class AuctionAdapter implements AuctionRepository {
     }
 
     @Override
+    public Optional<Auction> findAuctionByAuctionIdWithLock(Long auctionId) {
+        return jpaAuctionRepository.findAuctionByAuctionIdWithLock(auctionId);
+    }
+
+    @Override
     public Optional<Auction> findAuctionBySellerIdAndItemName(
             Long seller,
             String item
     ) {
-        return Optional.empty();
+        return jpaAuctionRepository.findAuctionBySellerIdAndItemName(seller, item);
     }
 
     @Override

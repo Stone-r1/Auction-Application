@@ -10,7 +10,6 @@ import org.example.user.domain.repositories.AuthenticationRepository;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -54,7 +53,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                         .ifPresent(this::setAuthenticationContext);
             }
         } catch (JwtException exception) {
-            throw new JwtException("The JWT Token is invalid, expired or malformed.", exception);
+            throw new JwtException(
+                    "The JWT Token is invalid, expired or malformed.",
+                    exception
+            );
         }
 
         filterChain.doFilter(request, response);

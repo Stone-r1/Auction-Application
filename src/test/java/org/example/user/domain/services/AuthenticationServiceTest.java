@@ -1,7 +1,7 @@
 package org.example.user.domain.services;
 
-import jakarta.persistence.EntityExistsException;
 import org.example.user.domain.entities.User;
+import org.example.user.domain.exceptions.UserAlreadyExistsException;
 import org.example.user.domain.repositories.AuthenticationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -130,7 +130,7 @@ class AuthenticationServiceTest {
     }
 
     @Test
-    void registerUser_throwsEntityExistsException_whenUsernameIsAlreadyTaken() {
+    void registerUser_throwsUserAlreadyExistsException_whenUsernameIsAlreadyTaken() {
         User newUser = new User();
         newUser.setUsername("john");
         newUser.setEmail("other@example.com");
@@ -141,13 +141,14 @@ class AuthenticationServiceTest {
         ).thenReturn(Optional.of(enabledUser));
 
         assertThatThrownBy(() -> authenticationService.registerUser(newUser))
-                .isInstanceOf(EntityExistsException.class);
+                .isInstanceOf(UserAlreadyExistsException.class)
+                .hasMessageContaining("john");
 
         verify(authenticationRepository, never()).save(any());
     }
 
     @Test
-    void registerUser_throwsEntityExistsException_whenEmailIsAlreadyTaken() {
+    void registerUser_throwsUserAlreadyExistsException_whenEmailIsAlreadyTaken() {
         User newUser = new User();
         newUser.setUsername("newUser");
         newUser.setEmail("john@example.com");
@@ -162,7 +163,8 @@ class AuthenticationServiceTest {
         ).thenReturn(Optional.of(enabledUser));
 
         assertThatThrownBy(() -> authenticationService.registerUser(newUser))
-                .isInstanceOf(EntityExistsException.class);
+                .isInstanceOf(UserAlreadyExistsException.class)
+                .hasMessageContaining("john@example.com");
 
         verify(authenticationRepository, never()).save(any());
     }

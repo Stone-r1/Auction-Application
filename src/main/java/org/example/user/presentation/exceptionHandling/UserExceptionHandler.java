@@ -1,79 +1,88 @@
 package org.example.user.presentation.exceptionHandling;
 
 
-import jakarta.persistence.EntityExistsException;
 import org.example.shared.infrastructure.exceptions.EmailDeliveryException;
 import org.example.shared.presentation.exceptionHandlers.ErrorMessage;
+import org.example.user.domain.exceptions.UserAlreadyExistsException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 
 @RestControllerAdvice
 public class UserExceptionHandler {
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorMessage handleValidationErrors(
-            MethodArgumentNotValidException exception
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorMessage handleUserAlreadyExists(
+            UserAlreadyExistsException exception
     ) {
-        Map<String, String> errors = new HashMap<>();
-
-        exception.getBindingResult()
-                .getFieldErrors()
-                .forEach(error ->
-                    errors.put(error.getField(), error.getDefaultMessage())
-                );
-
         return new ErrorMessage(
-                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.CONFLICT.value(),
                 new Date(),
-                "Validation failed",
-                errors
+                "User already exists",
+                Map.of(exception.getField(), exception.getValue())
         );
     }
 
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorMessage handleParseError(HttpMessageNotReadableException exception) {
-
+    @ExceptionHandler(UsernameNotFoundException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorMessage handleUsernameNotFound(
+            UsernameNotFoundException exception
+    ) {
+        // Intentionally generic to not confirm whether a username exists (user enumeration)
         return new ErrorMessage(
-                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.UNAUTHORIZED.value(),
                 new Date(),
-                "Invalid request format",
-                Map.of("Date Format", "Date must be in format yyyy-MM-dd")
+                "Authentication failed",
+                Map.of("reason", "Invalid username or password.")
         );
     }
 
-    @ExceptionHandler(EntityExistsException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorMessage handleEntityExists(EntityExistsException exception) {
-
+    @ExceptionHandler(AuthenticationCredentialsNotFoundException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorMessage handleBadCredentials(
+            AuthenticationCredentialsNotFoundException exception
+    ) {
+        // Intentionally generic to not expose whether username or password was wrong
         return new ErrorMessage(
-                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.UNAUTHORIZED.value(),
                 new Date(),
-                "Invalid credentials",
-                Map.of("User already exists", exception.getLocalizedMessage())
+                "Authentication failed",
+                Map.of("reason", "Invalid username or password.")
+        );
+    }
+
+    @ExceptionHandler(DisabledException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorMessage handleDisabledAccount(
+            DisabledException exception
+    ) {
+        return new ErrorMessage(
+                HttpStatus.FORBIDDEN.value(),
+                new Date(),
+                "Account not verified",
+                Map.of("action", "Check your email for the verification link.")
         );
     }
 
     @ExceptionHandler(EmailDeliveryException.class)
     @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
-    public ErrorMessage handleEmailDeliveryFailure(EmailDeliveryException exception) {
-
+    public ErrorMessage handleEmailDeliveryFailure(
+            EmailDeliveryException exception
+    ) {
         return new ErrorMessage(
                 HttpStatus.SERVICE_UNAVAILABLE.value(),
                 new Date(),
-                "Could not send verification email",
-                Map.of("Email", "Registration could not be completed because the verification " +
-                        "email failed to send. Please try registering again.")
+                "Email delivery failed",
+                Map.of("action", "Registration could not be completed. Please try again later.")
         );
     }
 }

@@ -1,7 +1,7 @@
 package org.example.user.application.register;
 
-import jakarta.persistence.EntityExistsException;
 import org.example.user.domain.entities.User;
+import org.example.user.domain.exceptions.UserAlreadyExistsException;
 import org.example.user.domain.services.AuthenticationService;
 import org.example.user.domain.services.VerificationTokenService;
 import org.junit.jupiter.api.Test;
@@ -86,27 +86,27 @@ class RegisterUseCaseTest {
     }
 
     @Test
-    void registerUser_propagatesEntityExistsException_whenUsernameIsAlreadyTaken() {
+    void registerUser_propagatesUserAlreadyExistsException_whenUsernameIsAlreadyTaken() {
         RegisterRequest request = new RegisterRequest("alice", "P@ssw0rd1", "alice@example.com", null);
 
         when(
                 authenticationService.registerUser(any())
-        ).thenThrow(EntityExistsException.class);
+        ).thenThrow(UserAlreadyExistsException.class);
 
         assertThatThrownBy(() -> registerUseCase.registerUser(request))
-                .isInstanceOf(EntityExistsException.class);
+                .isInstanceOf(UserAlreadyExistsException.class);
     }
 
     @Test
-    void registerUser_propagatesEntityExistsException_whenEmailIsAlreadyTaken() {
+    void registerUser_propagatesUserAlreadyExistsException_whenEmailIsAlreadyTaken() {
         RegisterRequest request = new RegisterRequest("newUser", "P@ssw0rd1", "taken@example.com", null);
 
         when(
                 authenticationService.registerUser(any())
-        ).thenThrow(EntityExistsException.class);
+        ).thenThrow(UserAlreadyExistsException.class);
 
         assertThatThrownBy(() -> registerUseCase.registerUser(request))
-                .isInstanceOf(EntityExistsException.class);
+                .isInstanceOf(UserAlreadyExistsException.class);
     }
 
     @Test
@@ -115,10 +115,10 @@ class RegisterUseCaseTest {
 
         when(
                 authenticationService.registerUser(any())
-        ).thenThrow(EntityExistsException.class);
+        ).thenThrow(UserAlreadyExistsException.class);
 
         assertThatThrownBy(() -> registerUseCase.registerUser(request))
-                .isInstanceOf(EntityExistsException.class);
+                .isInstanceOf(UserAlreadyExistsException.class);
 
         verify(verificationTokenService, never()).sendVerificationEmail(any());
     }

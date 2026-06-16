@@ -2,7 +2,6 @@ package org.example.auction.infrastructure.configs;
 
 import org.example.auction.domain.repositories.AuctionRepository;
 import org.example.auction.domain.services.AuctionService;
-import org.example.user.domain.repositories.AuthenticationRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,9 +11,8 @@ public class AuctionConfig {
 
     @Bean
     public AuctionService auctionService(
-            AuctionRepository auctionRepository,
-            AuthenticationRepository authenticationRepository
+            AuctionRepository auctionRepository
     ) {
-        return new AuctionService(auctionRepository, authenticationRepository);
+        return new AuctionService(auctionRepository);
     }
 }

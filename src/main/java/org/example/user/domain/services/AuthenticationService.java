@@ -1,8 +1,8 @@
 package org.example.user.domain.services;
 
 
-import jakarta.persistence.EntityExistsException;
 import org.example.user.domain.entities.User;
+import org.example.user.domain.exceptions.UserAlreadyExistsException;
 import org.example.user.domain.repositories.AuthenticationRepository;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.DisabledException;
@@ -26,9 +26,7 @@ public class AuthenticationService {
             String field,
             String value
     ) {
-        throw new EntityExistsException(
-                "User with " + field + " " + value + " already exists"
-        );
+        throw new UserAlreadyExistsException(field, value);
     }
 
     private void validateUserDoesNotExist(

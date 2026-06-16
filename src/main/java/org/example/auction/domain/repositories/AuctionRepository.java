@@ -9,6 +9,7 @@ import java.util.Optional;
 
 
 public interface AuctionRepository {
+    Optional<Auction> findAuctionByAuctionIdWithLock(Long auctionId);
     Optional<Auction> findAuctionBySellerIdAndItemName(Long seller, String item);
     Optional<Auction> findAuctionByAuctionId(Long auctionId);
     PageResult<Auction> findAuctionsBySellerId(PageQuery pageQuery, Long seller);

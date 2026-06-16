@@ -1,9 +1,38 @@
 package org.example.auction.domain.exceptions;
 
-public class AuctionNotStartedException extends RuntimeException {
+import org.example.shared.domain.exceptions.AppException;
+import org.example.shared.data.AuctionState;
+
+
+public class AuctionNotStartedException extends AppException {
+
+    private final Long auctionId;
+    private final AuctionState currentState;
+
     public AuctionNotStartedException(
-            String message
+            Long auctionId,
+            AuctionState currentState
     ) {
-        super(message);
+        super("Auction " + auctionId + " is not accepting bids. Current state: " + currentState + ".");
+        this.auctionId = auctionId;
+        this.currentState = currentState;
+    }
+
+    public AuctionNotStartedException(
+            Long auctionId,
+            AuctionState currentState,
+            Throwable cause
+    ) {
+        super("Auction " + auctionId + " is not accepting bids. Current state: " + currentState + ".", cause);
+        this.auctionId = auctionId;
+        this.currentState = currentState;
+    }
+
+    public Long getAuctionId() {
+        return auctionId;
+    }
+
+    public AuctionState getCurrentState() {
+        return currentState;
     }
 }

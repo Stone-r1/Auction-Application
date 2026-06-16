@@ -5,6 +5,7 @@ import org.example.auction.domain.entities.Bid;
 import org.example.auction.domain.services.BidService;
 import org.example.user.domain.repositories.CurrentUserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -22,6 +23,7 @@ public class BidUseCase {
         this.currentUserRepository = currentUserRepository;
     }
 
+    @Transactional
     public Bid placeBid(
             Long auctionId,
             PlaceBidRequest placeBidRequest
