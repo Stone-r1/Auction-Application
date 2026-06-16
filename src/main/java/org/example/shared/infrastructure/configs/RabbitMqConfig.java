@@ -2,6 +2,12 @@ package org.example.shared.infrastructure.configs;
 
 
 import org.springframework.amqp.core.*;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.JacksonJsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,6 +26,37 @@ public class RabbitMqConfig {
 
     public static final String AUCTION_ROUTING_PATTERN = "auction.*";
     public static final String DLQ_ROUTING_PATTERN = "#";
+
+
+    // Rabbit Admin is managing topology such as queues, exchanges and bindings
+    @Bean
+    public RabbitAdmin rabbitAdmin(
+            ConnectionFactory connectionFactory
+    ) {
+        return new RabbitAdmin(connectionFactory);
+    }
+
+    // Forces explicit initialization of RabbitMQ topology at application startup.
+    @Bean
+    public ApplicationRunner declareRabbitMqTopology(
+            RabbitAdmin rabbitAdmin
+    ) {
+        return args -> rabbitAdmin.initialize();
+    }
+
+    // Defines how Java objects are serialized into RabbitMQ messages and deserialized back.
+    @Bean
+    public MessageConverter jsonMessageConverter() {
+        return new JacksonJsonMessageConverter();
+    }
+
+    // The primary abstraction for sending messages to RabbitMQ.
+    @Bean
+    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
+        RabbitTemplate template = new RabbitTemplate(connectionFactory);
+        template.setMessageConverter(jsonMessageConverter());
+        return template;
+    }
 
     // Routes messages to queues based on routing keys and bindings
     @Bean
@@ -49,6 +86,7 @@ public class RabbitMqConfig {
     }
 
     // Routes messages matching "auction.*" from the exchange to the queue
+    // Note on calling methods - spring returns the singleton bean instance, not a new object.
     @Bean
     public Binding notificationBinding() {
         return BindingBuilder
@@ -64,6 +102,4 @@ public class RabbitMqConfig {
                 .to(deadLetterExchange())
                 .with(DLQ_ROUTING_PATTERN);
     }
-
-    // Note on calling methods - spring returns the singleton bean instance, not a new object.
 }
