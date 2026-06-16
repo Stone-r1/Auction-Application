@@ -3,12 +3,15 @@ package org.example.auction.infrastructure.adapters;
 import org.example.auction.domain.entities.Auction;
 import org.example.auction.domain.repositories.AuctionRepository;
 import org.example.auction.infrastructure.persistance.JpaAuctionRepository;
+import org.example.shared.data.AuctionState;
 import org.example.shared.domain.PageQuery;
 import org.example.shared.domain.PageResult;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -81,6 +84,22 @@ public class AuctionAdapter implements AuctionRepository {
         PageRequest springPageRequest = PageRequest.of(pageQuery.pageNumber(), pageQuery.pageSize());
         Page<Auction> springPage = jpaAuctionRepository.findAll(springPageRequest);
         return buildAuctionPage(springPage);
+    }
+
+    @Override
+    public List<Auction> findAuctionsByAuctionStateAndStartDateBefore(
+            AuctionState state,
+            LocalDateTime threshold
+    ) {
+        return jpaAuctionRepository.findAuctionsByAuctionStateAndStartDateBefore(state, threshold);
+    }
+
+    @Override
+    public List<Auction> findAuctionsByAuctionStateAndEndDateBefore(
+            AuctionState state,
+            LocalDateTime threshold
+    ) {
+        return jpaAuctionRepository.findAuctionsByAuctionStateAndEndDateBefore(state, threshold);
     }
 
     @Override
