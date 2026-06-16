@@ -6,7 +6,7 @@ import lombok.Data;
 import org.example.auction.domain.data.AuctionState;
 import org.example.user.domain.entities.User;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Data
@@ -37,12 +37,12 @@ public class Auction {
     private Double startingPrice = 0.0;
 
     @Column(name = "start_date", nullable = false)
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
     @Column(name = "end_date", nullable = false)
-    private LocalDate endDate;
+    private LocalDateTime endDate;
 
-    @Column(name = "max_bid", nullable = false)
+    @Column(name = "max_bid")
     private Double maxBid;
 
     @ManyToOne
@@ -50,10 +50,10 @@ public class Auction {
     private User seller;
 
     @ManyToOne
-    @JoinColumn(name = "winner_id", nullable = false)
+    @JoinColumn(name = "winner_id")
     private User winner;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "auction_state", nullable = false)
+    @Column(name = "auction_state")
     private AuctionState auctionState = AuctionState.NOT_STARTED;
 }

@@ -76,6 +76,6 @@ public class AuctionAdapter implements AuctionRepository {
     public Auction save(
             Auction auction
     ) {
-        return null;
+        return jpaAuctionRepository.save(auction);
     }
 }
