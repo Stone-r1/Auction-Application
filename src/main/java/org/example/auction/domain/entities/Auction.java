@@ -4,7 +4,6 @@ package org.example.auction.domain.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.example.auction.domain.data.AuctionState;
-import org.example.user.domain.entities.User;
 
 import java.time.LocalDateTime;
 
@@ -45,13 +44,11 @@ public class Auction {
     @Column(name = "max_bid")
     private Double maxBid;
 
-    @ManyToOne
-    @JoinColumn(name = "seller_id", nullable = false)
-    private User seller;
+    @Column(name = "seller_id", nullable = false)
+    private Long sellerId;
 
-    @ManyToOne
-    @JoinColumn(name = "winner_id")
-    private User winner;
+    @Column(name = "winner_id")
+    private Long winnerId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "auction_state")

@@ -5,13 +5,9 @@ import org.example.auction.domain.entities.Auction;
 import org.example.auction.domain.services.AuctionService;
 import org.example.shared.domain.PageQuery;
 import org.example.shared.domain.PageResult;
-import org.example.user.domain.entities.User;
 import org.example.user.domain.repositories.CurrentUserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.Duration;
-import java.time.LocalDate;
 
 
 @Service
@@ -40,7 +36,7 @@ public class AuctionUseCase {
             CreateAuctionRequest createAuctionRequest
     ) {
         Auction auction = new Auction();
-        auction.setSeller(currentUserRepository.getCurrentUser());
+        auction.setSellerId(currentUserRepository.getCurrentUser().getUserId());
         auction.setItemName(createAuctionRequest.itemName());
         auction.setItemDescription(createAuctionRequest.itemDescription());
         auction.setStartingPrice(createAuctionRequest.startingPrice());

@@ -20,6 +20,13 @@ public class AuthenticationRepositoryAdapter implements AuthenticationRepository
     }
 
     @Override
+    public Optional<User> findByUserId(
+            Long userId
+    ) {
+        return jpaAuthenticationRepository.findByUserId(userId);
+    }
+
+    @Override
     public Optional<User> findByUsername(
             String username
     ) {

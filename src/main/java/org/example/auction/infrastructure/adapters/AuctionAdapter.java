@@ -5,7 +5,6 @@ import org.example.auction.domain.repositories.AuctionRepository;
 import org.example.auction.infrastructure.persistance.JpaAuctionRepository;
 import org.example.shared.domain.PageQuery;
 import org.example.shared.domain.PageResult;
-import org.example.user.domain.entities.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
@@ -36,30 +35,30 @@ public class AuctionAdapter implements AuctionRepository {
     }
 
     @Override
-    public Optional<Auction> findAuctionBySellerAndItemName(
-            User seller,
+    public Optional<Auction> findAuctionBySellerIdAndItemName(
+            Long seller,
             String item
     ) {
         return Optional.empty();
     }
 
     @Override
-    public PageResult<Auction> findAuctionsBySeller(
+    public PageResult<Auction> findAuctionsBySellerId(
             PageQuery pageQuery,
-            User seller
+            Long seller
     ) {
         PageRequest springPageRequest = PageRequest.of(pageQuery.pageNumber(), pageQuery.pageSize());
-        Page<Auction> springPage = jpaAuctionRepository.findAuctionsBySeller(springPageRequest, seller);
+        Page<Auction> springPage = jpaAuctionRepository.findAuctionsBySellerId(springPageRequest, seller);
         return buildAuctionPage(springPage);
     }
 
     @Override
-    public PageResult<Auction> findAuctionsByWinner(
+    public PageResult<Auction> findAuctionsByWinnerId(
             PageQuery pageQuery,
-            User winner
+            Long winner
     ) {
         PageRequest springPageRequest = PageRequest.of(pageQuery.pageNumber(), pageQuery.pageSize());
-        Page<Auction> springPage = jpaAuctionRepository.findAuctionsByWinner(springPageRequest, winner);
+        Page<Auction> springPage = jpaAuctionRepository.findAuctionsByWinnerId(springPageRequest, winner);
         return buildAuctionPage(springPage);
     }
 

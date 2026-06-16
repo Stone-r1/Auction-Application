@@ -16,7 +16,8 @@ public record CreateAuctionRequest(
         @NotBlank(message = "Item description is required")
         String itemDescription,
 
-        Double startingPrice, // may be 0.0 as default
+        @Min(0)
+        Double startingPrice,
 
         @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
