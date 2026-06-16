@@ -3,6 +3,7 @@ package org.example.shared.infrastructure.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
@@ -34,8 +35,10 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        // intentionally accepting every request for testing purposes
-                        .requestMatchers("/register", "/login", "/verify", "/auction/**").permitAll()
+                        .requestMatchers("/register", "/login", "/verify").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/auction/all").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/auction/create").authenticated()
+                        .requestMatchers("/auction/{auctionId}/placeBid").authenticated()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

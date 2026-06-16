@@ -7,6 +7,8 @@ import org.example.user.domain.services.VerificationTokenService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 
 @Service
 public class RegisterUseCase {
@@ -30,6 +32,8 @@ public class RegisterUseCase {
         user.setEmail(registerRequest.email());
         user.setPassword(registerRequest.password());
         user.setBirthDate(registerRequest.birthDate());
+        user.setCreatedAt(LocalDateTime.now());
+        user.setLastModified(LocalDateTime.now());
 
         User registeredUser = authenticationService.registerUser(user);
         verificationTokenService.sendVerificationEmail(registeredUser);

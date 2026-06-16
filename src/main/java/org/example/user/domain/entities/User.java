@@ -3,10 +3,7 @@ package org.example.user.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.boot.context.properties.bind.DefaultValue;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.example.shared.data.Roles;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,7 +18,6 @@ import java.time.LocalDateTime;
                 @UniqueConstraint(name = "uk_users_email", columnNames = "email")
         }
 )
-@EntityListeners(AuditingEntityListener.class)
 public class User {
 
     @Id
@@ -41,14 +37,16 @@ public class User {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    @CreatedDate
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @Column(nullable = false)
     private Boolean enabled = false;
 
-    @LastModifiedDate
     @Column(name = "last_modified")
     private LocalDateTime lastModified;
+
+    @Column(name = "role", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Roles role = Roles.USER;
 }
