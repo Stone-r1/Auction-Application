@@ -4,9 +4,10 @@ import org.example.shared.domain.AuctionEventPublisher;
 import org.example.shared.events.AuctionClosedEvent;
 import org.example.shared.events.AuctionStartedEvent;
 import org.example.shared.events.BidPlacedEvent;
-import org.example.shared.infrastructure.configs.RabbitMqConfig;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
+
+import static org.example.shared.data.RabbitConstants.*;
 
 
 @Component
@@ -24,8 +25,8 @@ public class RabbitMqEventPublisher implements AuctionEventPublisher {
             AuctionStartedEvent event
     ) {
         rabbitTemplate.convertAndSend(
-                RabbitMqConfig.AUCTION_EXCHANGE,
-                RabbitMqConfig.AUCTION_STARTED_ROUTING_KEY,
+                AUCTION_EXCHANGE,
+                AUCTION_STARTED_ROUTING_KEY,
                 event
         );
     }
@@ -35,8 +36,8 @@ public class RabbitMqEventPublisher implements AuctionEventPublisher {
             AuctionClosedEvent event
     ) {
         rabbitTemplate.convertAndSend(
-                RabbitMqConfig.AUCTION_EXCHANGE,
-                RabbitMqConfig.AUCTION_CLOSED_ROUTING_KEY,
+                AUCTION_EXCHANGE,
+                AUCTION_CLOSED_ROUTING_KEY,
                 event
         );
     }
@@ -46,8 +47,8 @@ public class RabbitMqEventPublisher implements AuctionEventPublisher {
             BidPlacedEvent event
     ) {
         rabbitTemplate.convertAndSend(
-                RabbitMqConfig.AUCTION_EXCHANGE,
-                RabbitMqConfig.BID_PLACED_ROUTING_KEY,
+                AUCTION_EXCHANGE,
+                BID_PLACED_ROUTING_KEY,
                 event
         );
     }
