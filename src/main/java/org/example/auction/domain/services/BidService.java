@@ -31,6 +31,15 @@ public class BidService {
                 .orElseThrow(() -> new AuctionNotFoundException(auctionId));
     }
 
+    private void updateAuctionEntity(
+            Auction auction,
+            Bid bid
+    ) {
+        auction.setMaxBid(bid.getAmount());
+        auction.setWinnerId(bid.getUserId());
+        auctionRepository.save(auction);
+    }
+
     public Bid placeBid(
           Bid bidToPlace
     ) {
@@ -47,11 +56,7 @@ public class BidService {
             throw new InsufficientBidAmountException(requestedBidAmount, currentMaxBid);
         }
 
-        // update auction entity
-        auction.setMaxBid(requestedBidAmount);
-        auction.setWinnerId(bidToPlace.getUserId());
-        auctionRepository.save(auction);
-
+        updateAuctionEntity(auction, bidToPlace);
         return bidRepository.save(bidToPlace);
     }
 }
