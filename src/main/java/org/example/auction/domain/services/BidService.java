@@ -6,6 +6,7 @@ import org.example.auction.domain.entities.Bid;
 import org.example.auction.domain.exceptions.AuctionNotFoundException;
 import org.example.auction.domain.exceptions.AuctionNotStartedException;
 import org.example.auction.domain.exceptions.InsufficientBidAmountException;
+import org.example.auction.domain.exceptions.InvalidBidException;
 import org.example.auction.domain.repositories.AuctionRepository;
 import org.example.auction.domain.repositories.BidRepository;
 import org.example.shared.data.AuctionState;
@@ -47,6 +48,12 @@ public class BidService {
 
         if (auction.getAuctionState() != AuctionState.ONGOING) {
             throw new AuctionNotStartedException(bidToPlace.getAuctionId(), auction.getAuctionState());
+        }
+
+        if (bidToPlace.getUserId().equals(auction.getSellerId())) {
+            throw new InvalidBidException(
+                    "Auction owner is not able to place bids"
+            );
         }
 
         Double currentMaxBid = auction.getMaxBid();

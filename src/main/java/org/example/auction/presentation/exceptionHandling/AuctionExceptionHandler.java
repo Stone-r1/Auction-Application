@@ -1,10 +1,7 @@
 package org.example.auction.presentation.exceptionHandling;
 
 
-import org.example.auction.domain.exceptions.AuctionAlreadyExistsException;
-import org.example.auction.domain.exceptions.AuctionNotFoundException;
-import org.example.auction.domain.exceptions.AuctionNotStartedException;
-import org.example.auction.domain.exceptions.InsufficientBidAmountException;
+import org.example.auction.domain.exceptions.*;
 import org.example.shared.presentation.exceptionHandlers.ErrorMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -73,6 +70,19 @@ public class AuctionExceptionHandler {
                 new Date(),
                 "Auction already exists",
                 Map.of("itemName", exception.getItemName())
+        );
+    }
+
+    @ExceptionHandler(InvalidBidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorMessage handleInvalidBidException(
+            InvalidBidException exception
+    ) {
+        return new ErrorMessage(
+                HttpStatus.BAD_REQUEST.value(),
+                new Date(),
+                "Invalid Bid Exception",
+                Map.of("reason", exception.getLocalizedMessage())
         );
     }
 }
