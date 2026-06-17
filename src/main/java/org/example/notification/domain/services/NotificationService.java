@@ -43,7 +43,7 @@ public class NotificationService {
         emailSenderRepository.send(
                 getEmailByUserId(auctionClosedEvent.winnerId()),
                 "Auction was finished",
-                buildAuctionClosedEmail(
+                buildAuctionEmail(
                         "Congratulations! You have won the auction.",
                         auctionClosedEvent.auctionId(),
                         auctionClosedEvent.maxBidAmount()
@@ -54,18 +54,22 @@ public class NotificationService {
     public void notifyBidderLeading(
             BidPlacedEvent bidPlacedEvent
     ) {
+        if (bidPlacedEvent.previousWinnerId() == null) {
+            return; // first bid, nobody was outbid
+        }
+
         emailSenderRepository.send(
-                getEmailByUserId(bidPlacedEvent.bidderId()),
-                "Bid placed",
-                buildAuctionClosedEmail(
-                        "Congratulations! You have just placed a bid.",
+                getEmailByUserId(bidPlacedEvent.previousWinnerId()),
+                "Outbid",
+                buildAuctionEmail(
+                        "Unfortunately your bid is no longer leading :d",
                         bidPlacedEvent.auctionId(),
                         bidPlacedEvent.amount()
                 )
         );
     }
 
-    private String buildAuctionClosedEmail(
+    private String buildAuctionEmail(
             String message,
             Long auctionId,
             Double maxBidAmount

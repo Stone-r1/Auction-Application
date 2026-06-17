@@ -29,7 +29,11 @@ public class BidService {
     ) {
         return auctionRepository
                 .findAuctionByAuctionIdWithLock(auctionId)
-                .orElseThrow(() -> new AuctionNotFoundException(auctionId));
+                .orElseThrow(() ->
+                        new AuctionNotFoundException(
+                                auctionId
+                        )
+                );
     }
 
     private void updateAuctionEntity(
@@ -41,7 +45,7 @@ public class BidService {
         auctionRepository.save(auction);
     }
 
-    public Bid placeBid(
+    public Long placeBid(
           Bid bidToPlace
     ) {
         Auction auction = getAuctionByAuctionId(bidToPlace.getAuctionId());
@@ -59,11 +63,15 @@ public class BidService {
         Double currentMaxBid = auction.getMaxBid();
         Double requestedBidAmount = bidToPlace.getAmount();
 
-        if (currentMaxBid != null && currentMaxBid >= requestedBidAmount) {
-            throw new InsufficientBidAmountException(requestedBidAmount, currentMaxBid);
+        Double threshold = currentMaxBid != null ? currentMaxBid : auction.getStartingPrice();
+        if (requestedBidAmount <= threshold) {
+            throw new InsufficientBidAmountException(requestedBidAmount, threshold);
         }
 
+        // at this point we are sure about outbid
+        Long previousWinner = auction.getWinnerId();
         updateAuctionEntity(auction, bidToPlace);
-        return bidRepository.save(bidToPlace);
+        bidRepository.save(bidToPlace);
+        return previousWinner;
     }
 }

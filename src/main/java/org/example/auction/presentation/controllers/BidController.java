@@ -20,7 +20,7 @@ public class BidController {
     }
 
     @PostMapping("/placeBid")
-    public ResponseEntity<Bid> placeBid(
+    public ResponseEntity<String> placeBid(
             @PathVariable Long auctionId,
             @Valid @RequestBody PlaceBidRequest placeBidRequest
     ) {
