@@ -14,9 +14,6 @@ import java.util.Optional;
 public interface AuctionRepository {
     Optional<Auction> findAuctionByAuctionIdWithLock(Long auctionId);
     Optional<Auction> findAuctionBySellerIdAndItemName(Long seller, String item);
-    Optional<Auction> findAuctionByAuctionId(Long auctionId);
-    PageResult<Auction> findAuctionsBySellerId(PageQuery pageQuery, Long seller);
-    PageResult<Auction> findAuctionsByWinnerId(PageQuery pageQuery, Long winner);
     PageResult<Auction> findAll(PageQuery pageQuery);
     List<Auction> findAuctionsByAuctionStateAndStartDateBefore(AuctionState state, LocalDateTime threshold);
     List<Auction> findAuctionsByAuctionStateAndEndDateBefore(AuctionState state, LocalDateTime threshold);

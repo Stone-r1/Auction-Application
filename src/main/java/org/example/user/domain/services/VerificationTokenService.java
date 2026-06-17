@@ -11,6 +11,7 @@ import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
+
 public class VerificationTokenService {
     private final VerificationTokenRepository verificationTokenRepository;
     private final AuthenticationRepository authenticationRepository;

@@ -51,33 +51,6 @@ public class AuctionAdapter implements AuctionRepository {
     }
 
     @Override
-    public Optional<Auction> findAuctionByAuctionId(
-            Long auctionId
-    ) {
-        return jpaAuctionRepository.findAuctionByAuctionId(auctionId);
-    }
-
-    @Override
-    public PageResult<Auction> findAuctionsBySellerId(
-            PageQuery pageQuery,
-            Long seller
-    ) {
-        PageRequest springPageRequest = PageRequest.of(pageQuery.pageNumber(), pageQuery.pageSize());
-        Page<Auction> springPage = jpaAuctionRepository.findAuctionsBySellerId(springPageRequest, seller);
-        return buildAuctionPage(springPage);
-    }
-
-    @Override
-    public PageResult<Auction> findAuctionsByWinnerId(
-            PageQuery pageQuery,
-            Long winner
-    ) {
-        PageRequest springPageRequest = PageRequest.of(pageQuery.pageNumber(), pageQuery.pageSize());
-        Page<Auction> springPage = jpaAuctionRepository.findAuctionsByWinnerId(springPageRequest, winner);
-        return buildAuctionPage(springPage);
-    }
-
-    @Override
     public PageResult<Auction> findAll(
             PageQuery pageQuery
     ) {

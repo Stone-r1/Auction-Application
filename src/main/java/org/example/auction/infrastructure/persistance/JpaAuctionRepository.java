@@ -1,7 +1,6 @@
 package org.example.auction.infrastructure.persistance;
 
 import jakarta.persistence.LockModeType;
-import jakarta.validation.constraints.NotNull;
 import org.example.auction.domain.entities.Auction;
 import org.example.shared.data.AuctionState;
 import org.jspecify.annotations.NonNull;
@@ -25,9 +24,6 @@ public interface JpaAuctionRepository extends JpaRepository<Auction, Long> {
     Optional<Auction> findAuctionByAuctionIdWithLock(@Param("id") Long id);
 
     Optional<Auction> findAuctionBySellerIdAndItemName(Long sellerId, String item);
-    Optional<Auction> findAuctionByAuctionId(Long auctionId);
-    Page<Auction> findAuctionsBySellerId(@NotNull Pageable pageable, Long seller);
-    Page<Auction> findAuctionsByWinnerId(@NotNull Pageable pageable, Long winner);
     Page<Auction> findAll(@NonNull Pageable pageable);
 
     List<Auction> findAuctionsByAuctionStateAndStartDateBefore(AuctionState state, LocalDateTime threshold);

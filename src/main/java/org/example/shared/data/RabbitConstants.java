@@ -1,5 +1,6 @@
 package org.example.shared.data;
 
+
 public class RabbitConstants {
     public static final String AUCTION_EXCHANGE = "auction.exchange";
     public static final String NOTIFICATION_QUEUE = "notification.queue";

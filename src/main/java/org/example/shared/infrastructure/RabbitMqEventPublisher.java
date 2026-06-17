@@ -2,7 +2,6 @@ package org.example.shared.infrastructure;
 
 import org.example.shared.domain.AuctionEventPublisher;
 import org.example.shared.events.AuctionClosedEvent;
-import org.example.shared.events.AuctionStartedEvent;
 import org.example.shared.events.BidPlacedEvent;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
@@ -20,6 +19,7 @@ public class RabbitMqEventPublisher implements AuctionEventPublisher {
         this.rabbitTemplate = rabbitTemplate;
     }
 
+    /*
     @Override
     public void publish(
             AuctionStartedEvent event
@@ -30,6 +30,7 @@ public class RabbitMqEventPublisher implements AuctionEventPublisher {
                 event
         );
     }
+    */
 
     @Override
     public void publish(

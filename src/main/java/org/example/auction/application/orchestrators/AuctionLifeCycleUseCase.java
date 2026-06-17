@@ -6,7 +6,6 @@ import org.example.auction.domain.services.AuctionService;
 import org.example.shared.data.AuctionState;
 import org.example.shared.domain.AuctionEventPublisher;
 import org.example.shared.events.AuctionClosedEvent;
-import org.example.shared.events.AuctionStartedEvent;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -3,7 +3,6 @@ package org.example.auction.presentation.controllers;
 import jakarta.validation.Valid;
 import org.example.auction.application.dto.PlaceBidRequest;
 import org.example.auction.application.orchestrators.BidUseCase;
-import org.example.auction.domain.entities.Bid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
