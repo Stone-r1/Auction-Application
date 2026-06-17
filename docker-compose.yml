@@ -1,0 +1,87 @@
+services:
+  app:
+    build: .
+    container_name: auction-app
+    ports:
+      - "8080:8080"
+    environment:
+      # Database
+      DB_URL: jdbc:postgresql://postgres:5432/${DB_NAME:-auctiondb}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+
+      # JWT
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-36000}
+
+      # Mail
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+
+      # App
+      APP_BASE_URL: ${APP_BASE_URL}
+
+      # RabbitMQ
+      SPRING_RABBITMQ_HOST: rabbitmq
+      RABBIT_MQ_USERNAME: ${RABBIT_MQ_USERNAME:-guest}
+      RABBIT_MQ_PASSWORD: ${RABBIT_MQ_PASSWORD:-guest}
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - auction-network
+    restart: on-failure
+
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: auction-postgres
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d auctiondb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - auction-network
+
+
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    container_name: auction-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBIT_MQ_USERNAME:-guest}
+      RABBITMQ_DEFAULT_PASS: ${RABBIT_MQ_PASSWORD:-guest}
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - auction-network
+
+
+volumes:
+  postgres_data:
+  rabbitmq_data:
+
+# Internal network so services reach each other by service name
+networks:
+  auction-network:
+    driver: bridge
+
