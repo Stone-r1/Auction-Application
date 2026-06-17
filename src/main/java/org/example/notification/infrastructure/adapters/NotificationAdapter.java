@@ -2,7 +2,8 @@ package org.example.notification.infrastructure.adapters;
 
 
 import org.example.notification.domain.repositories.NotificationRepository;
-import org.example.user.infrastructure.persistance.JpaAuthenticationRepository;
+import org.example.user.domain.entities.User;
+import org.example.user.domain.repositories.AuthenticationRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -10,18 +11,17 @@ import java.util.Optional;
 
 @Repository
 public class NotificationAdapter implements NotificationRepository {
-    private final JpaAuthenticationRepository jpaAuthenticationRepository;
+    private final AuthenticationRepository authenticationRepository;
 
     public NotificationAdapter(
-            JpaAuthenticationRepository jpaAuthenticationRepository
+            AuthenticationRepository authenticationRepository
     ) {
-        this.jpaAuthenticationRepository = jpaAuthenticationRepository;
+        this.authenticationRepository = authenticationRepository;
     }
 
     @Override
-    public Optional<String> findEmailByUserId(
-            Long userId
-    ) {
-        return jpaAuthenticationRepository.findEmailByUserId(userId);
+    public Optional<String> findEmailByUserId(Long userId) {
+        return authenticationRepository.findByUserId(userId)
+                .map(User::getEmail);
     }
 }

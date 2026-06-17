@@ -34,11 +34,14 @@ public class AuctionLifeCycleUseCase {
 
         due.forEach(auction -> {
             auctionService.startAuction(auction);
+
+            /* Don't publish event as there is no option "notify me" on auction, thus no queue and consumer
             auctionEventPublisher.publish(
                     new AuctionStartedEvent(
                             auction.getAuctionId()
                     )
             );
+             */
         });
     }
 
