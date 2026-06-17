@@ -47,7 +47,6 @@ public class BidUseCase {
 
         // notify previous max bid owner that they were outbid
         if (previousWinner != null) {
-            System.out.println("Outbid event should be triggered!");
             auctionEventPublisher
                     .publish(new BidPlacedEvent(
                             auctionId,

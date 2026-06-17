@@ -2,7 +2,7 @@
 
 A **modular monolith** Spring Boot application for online auctions. The project intentionally avoids splitting into microservices.
 instead it enforces strict internal module boundaries that mirror what a microservices architecture would look like, all within a single deployable artifact.
-
+Featuring **Domain-Driver Development** in unison with **Hexagonal Architecture.** The project was created for demonstrating and learning purposes.
 ---
 
 ## Tech Stack
