@@ -53,10 +53,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                         .ifPresent(this::setAuthenticationContext);
             }
         } catch (JwtException exception) {
-            throw new JwtException(
-                    "The JWT Token is invalid, expired or malformed.",
-                    exception
-            );
+            // invalid token -> security context stays empty, Spring Security returns 401
         }
 
         filterChain.doFilter(request, response);

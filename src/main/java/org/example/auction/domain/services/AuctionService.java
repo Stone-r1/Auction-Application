@@ -1,6 +1,7 @@
 package org.example.auction.domain.services;
 
 
+import org.example.auction.domain.exceptions.AuctionStateException;
 import org.example.auction.domain.exceptions.AuctionNotStartedException;
 import org.example.shared.data.AuctionState;
 import org.example.auction.domain.entities.Auction;
@@ -68,7 +69,7 @@ public class AuctionService {
             Auction auction
     ) {
         if (auction.getAuctionState() != AuctionState.ONGOING) {
-            throw new IllegalStateException("Cannot close a non-ongoing auction.");
+            throw new AuctionStateException("Cannot close a non-ongoing auction.");
         }
 
         auction.setAuctionState(AuctionState.FINISHED);

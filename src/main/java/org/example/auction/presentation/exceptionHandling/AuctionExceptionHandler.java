@@ -85,4 +85,17 @@ public class AuctionExceptionHandler {
                 Map.of("reason", exception.getLocalizedMessage())
         );
     }
+
+    @ExceptionHandler(AuctionStateException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorMessage handleAuctionStateException(
+            AuctionStateException exception
+    ) {
+        return new ErrorMessage(
+                HttpStatus.FORBIDDEN.value(),
+                new Date(),
+                "Invalid auction state to perform the action",
+                Map.of("reason", exception.getLocalizedMessage())
+        );
+    }
 }
